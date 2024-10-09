@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import Footer from './Footer'
 
 import Navbar from "./Navbar";
 
@@ -58,7 +59,7 @@ const MovieDetails = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 bg-card-bg text-gray-600 rounded-lg shadow-md flex flex-col md:flex-row">
+    <div className="container mx-auto p-4 bg-card-bg text-gray-600 mt-14 rounded-lg shadow-md flex flex-col md:flex-row">
       <img
         src={movie.Poster}
         alt={movie.Title}
@@ -71,17 +72,17 @@ const MovieDetails = () => {
         <h1 className="text-4xl font-bold mb-2">{movie.Title}</h1>
 
         <div className="mb-4">
-          <h2 className="text-xl font-semibold">Plot Summary:</h2>
+          <h2 className="text-lg font-semibold">Plot Summary</h2>
           <p>{movie.Plot}</p>
         </div>
 
         <div className="mb-4">
-          <h2 className="text-xl font-semibold">Genres:</h2>
-          <div className="flex flex-wrap mb-2">{renderBadges()}</div>
+          <h2 className="text-xl font-semibold mb-2">Genres:</h2>
+          <div className="flex flex-wrap mb-3">{renderBadges()}</div>
         </div>
 
         <div className="mb-4">
-          <h2 className="text-xl text-left font-semibold">Cast:</h2>
+          <h2 className="text-xl text-left font-semibold">Cast</h2>
           <div className="grid grid-cols-3 gap-4">
             {actors.map((actor, index) => (
               <div key={index} className="flex flex-col justify-start  text-rightitems-center">
@@ -92,7 +93,7 @@ const MovieDetails = () => {
         </div>
 
         <div className="mb-4">
-          <h2 className="text-xl font-semibold">Ratings:</h2>
+          <h2 className="text-xl font-semibold">Ratings</h2>
           <ul>
             {movie.Ratings.map((rating, index) => (
               <li key={index}>
@@ -107,6 +108,7 @@ const MovieDetails = () => {
           <p>{movie.Released}</p>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
