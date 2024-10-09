@@ -81,15 +81,10 @@ const MovieDetails = () => {
         </div>
 
         <div className="mb-4">
-          <h2 className="text-xl font-semibold">Cast:</h2>
+          <h2 className="text-xl text-left font-semibold">Cast:</h2>
           <div className="grid grid-cols-3 gap-4">
             {actors.map((actor, index) => (
-              <div key={index} className="flex flex-col items-center">
-                <img
-                  src={`https://api.example.com/getActorImage?name=${actor}`} 
-                  alt={actor}
-                  className="rounded-full h-24 w-24 object-cover mb-2"
-                />
+              <div key={index} className="flex flex-col justify-start  text-rightitems-center">
                 <span>{actor}</span>
               </div>
             ))}
