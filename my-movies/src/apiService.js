@@ -39,7 +39,7 @@ export const fetchMovieDetails = async (imdbID) => {
       // Split actors string into an array if needed
       const castArray = Actors.split(', ').map((actor) => {
         const [name, role] = actor.split(' as ');
-        return { Name: name, Role: role || 'Actor', Image: `https://via.placeholder.com/50` }; // Placeholder image; replace with actual if available
+        return { Name: name, Role: role || 'Actor',}; // Placeholder image; replace with actual if available
       });
 
       return {

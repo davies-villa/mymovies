@@ -47,7 +47,7 @@ const TrendingMoviesHeader = () => {
         <div className="relative h-screen flex flex-col justify-center items-center">
           <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
-          <div className="relative z-10 text-5xl font-extrabold text-center text-white flex items-center justify-center flex-col">
+          <div className="relative z-10 text-4xl font-extrabold text-center text-white flex items-center justify-center flex-col">
             <h1>Watch Movies</h1>
             <p className="text-sm font-medium">Find all your movies here</p>
           </div>
