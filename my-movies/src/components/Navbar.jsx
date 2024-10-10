@@ -9,9 +9,9 @@ const Navbar = () => {
   const searchRef = useRef(null);
   const bellRef = useRef(null);
   const navRef = useRef(null);
-  const overlayRef = useRef(null); // Reference for the overlay
+  const overlayRef = useRef(null);
 
-  const API_KEY = import.meta.env.VITE_OMDB_API_KEY; // Access the API key from environment variables
+  const API_KEY = import.meta.env.VITE_OMDB_API_KEY;
 
   const handleSearchClick = () => {
     setIsSearching(true);
@@ -61,6 +61,11 @@ const Navbar = () => {
     };
     const type = getRandomNotificationType();
     return types[type] || `Check out "${movie.Title}"!`;
+  };
+
+  // Function to delete a notification
+  const deleteNotification = (id) => {
+    setNotifications(notifications.filter((notification) => notification.id !== id));
   };
 
   useEffect(() => {
@@ -117,7 +122,7 @@ const Navbar = () => {
         />
       )}
 
-      <nav className="flex items-center animate__animated animate__fadeInDown justify-between px-6 py-4  text-white relative z-20">
+      <nav className="flex items-center animate__animated animate__fadeInDown justify-between px-6 py-4 text-white relative z-20">
         {/* Logo */}
         <div className="text-xl font-bold z-10">mymovies</div>
 
@@ -168,8 +173,8 @@ const Navbar = () => {
               notificationMenuOpen ? "translate-x-0" : "translate-x-full"
             }`}
           >
-            <div className="flex justify-between bg-gray-900 items-center p-4 border-b">
-              <h2 className="text-lg font-semibold">Notifications</h2>
+            <div className="flex justify-between bg-gray-900 items-center p-4 ">
+              <h2 className="text-lg px-4 font-semibold">Notifications</h2>
               <button
                 className="focus:outline-none text-3xl"
                 onClick={() => setNotificationMenuOpen(false)}
@@ -177,26 +182,35 @@ const Navbar = () => {
                 &times;
               </button>
             </div>
-            <ul className="p-4 overflow-y-auto bg-gray-900">
+            <ul className="p-4 overflow-y-auto h-screen bg-gray-900">
               {notifications.length > 0 ? (
                 notifications.map((notification) => (
                   <li
                     key={notification.id}
-                    className="flex items-center bg-gray-800  py-7 mt-6 px-4 gap-3 justify-between shadow-custom-black hover:bg-gray-700 rounded"
+                    className="flex items-center bg-gray-800 py-7 mt-6 px-4 gap-3 justify-between shadow-custom-black hover:bg-gray-700 rounded"
                   >
-                    <img
-                      src={notification.image}
-                      alt="Notification"
-                      className="w-10 h-10 rounded-full"
-                    />
-                    <div>
-                      <p className="text-sm font-medium">
-                        {notification.message}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {notification.type}
-                      </p>
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={notification.image}
+                        alt="Notification"
+                        className="w-10 h-10 rounded-full"
+                      />
+                      <div>
+                        <p className="text-sm font-medium">
+                          {notification.message}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {notification.type}
+                        </p>
+                      </div>
                     </div>
+                    {/* Delete Button */}
+                    <button
+                      onClick={() => deleteNotification(notification.id)}
+                      className="text-red-500 hover:text-red-700 text-xl font-semibold"
+                    >
+                      &times;
+                    </button>
                   </li>
                 ))
               ) : (
@@ -206,7 +220,7 @@ const Navbar = () => {
           </div>
 
           {/* Hamburger Menu */}
-          <div className="relative h-full" ref={navRef}>
+          <div className="relative " ref={navRef}>
             <button className="focus:outline-none" onClick={toggleMenu}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -225,12 +239,12 @@ const Navbar = () => {
             </button>
 
             <div
-              className={`fixed top-0 right-0 h-full w-80 bg-gray-900 text-white shadow-lg z-50 transition-transform duration-300 ease-in-out ${
+              className={`fixed top-0 right-0 h-screen w-80 bg-gray-900 shadow-lg z-50 transition-transform duration-300 ease-in-out ${
                 menuOpen ? "translate-x-0" : "translate-x-full"
               }`}
             >
-              <div className="flex justify-between items-center px-9 pt-4">
-                <h2 className="text-lg font-semibold">Menu</h2>
+              <div className="flex justify-between bg-gray-900 items-center p-4">
+                <h2 className="text-lg px-4 font-semibold">Menu</h2>
                 <button
                   className="focus:outline-none text-3xl"
                   onClick={toggleMenu}
@@ -238,22 +252,10 @@ const Navbar = () => {
                   &times;
                 </button>
               </div>
-              <ul className="p-8 mt-0 bg-gray-900">
-                <li className="py-3 px-2  hover:bg-gray-700 rounded">
-                  <a href="#">Home</a>
-                </li>
-                <li className="py-3 px-2 hover:bg-gray-700 rounded">
-                  <a href="#">Popular Movies</a>
-                </li>
-                <li className="py-3 px-2 hover:bg-gray-700 rounded">
-                  <a href="#">Upcoming Movies</a>
-                </li>
-                <li className="py-3 px-2 hover:bg-gray-700 rounded">
-                  <a href="#">Top Rated</a>
-                </li>
-                <li className="py-3 px-2 hover:bg-gray-700 rounded">
-                  <a href="#">Genres</a>
-                </li>
+              <ul className="p-4">
+                <li className="hover:bg-gray-700 p-4 rounded">My Profile</li>
+                <li className="hover:bg-gray-700 p-4 rounded">Settings</li>
+                <li className="hover:bg-gray-700 p-4 rounded">Logout</li>
               </ul>
             </div>
           </div>
