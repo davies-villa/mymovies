@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
@@ -10,22 +10,46 @@ const TrendingMoviesHeader = () => {
   const [searchTerm, setSearchTerm] = useState(""); 
   const [movies, setMovies] = useState([]); 
   const [showResults, setShowResults] = useState(false); 
+  const [category, setCategory] = useState(""); 
+  
   const navigate = useNavigate();
 
-  const handleSearch = async (e) => {
+  // Function to search movies or categories
+  const searchMovies = async (term) => {
+    try {
+      const response = await axios.get(
+        `https://www.omdbapi.com/?s=${term}&apikey=${import.meta.env.VITE_OMDB_API_KEY}`
+      );
+      setMovies(response.data.Search || []); 
+      setShowResults(true);
+
+      // Scroll to results section
+      const resultsSection = document.getElementById("results-section");
+      if (resultsSection) {
+        resultsSection.scrollIntoView({ behavior: "smooth" });
+      }
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+    }
+  };
+
+  // Handle form search
+  const handleSearch = (e) => {
     e.preventDefault(); 
     if (searchTerm.trim()) {
-      try {
-        const response = await axios.get(
-          `https://www.omdbapi.com/?s=${searchTerm}&apikey=${import.meta.env.VITE_OMDB_API_KEY}`
-        );
-        setMovies(response.data.Search || []); 
-        setShowResults(true);
-        window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
-      } catch (error) {
-        console.error("Error fetching movies:", error);
-      }
+      searchMovies(searchTerm); 
     }
+  };
+
+  // Handle category click
+  const handleCategoryClick = (category) => {
+    setCategory(category);
+    let searchTermByCategory = "";
+    if (category === "movies") searchTermByCategory = "trending";
+    else if (category === "series") searchTermByCategory = "series";
+    else if (category === "originals") searchTermByCategory = "featured";
+
+    searchMovies(searchTermByCategory);
   };
 
   return (
@@ -41,18 +65,18 @@ const TrendingMoviesHeader = () => {
         }}
       >
         <div className="fixed top-0 left-0 w-full z-20">
-          <Navbar />
+          <Navbar handleCategoryClick={handleCategoryClick} /> 
         </div>
 
         <div className="relative h-screen flex flex-col justify-center items-center">
           <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
-          <div className="relative z-10 text-4xl font-extrabold text-center text-white flex items-center justify-center flex-col">
+          <div className="relative z-10 text-4xl font-extrabold text-center animate__animated animate__fadeInDown text-white flex items-center justify-center flex-col">
             <h1>Watch Movies</h1>
             <p className="text-sm font-medium">Find all your movies here</p>
           </div>
 
-          <div className="relative z-10 mt-6 w-full flex-row flex items-center justify-center">
+          <div className="relative z-10 mt-6 w-full animate__animated animate__fadeInDown flex-row flex items-center justify-center">
             <form onSubmit={handleSearch}>
               <input
                 type="text"
@@ -67,10 +91,10 @@ const TrendingMoviesHeader = () => {
         </div>
       </header>
 
-      <section className="mt-16 bg-card-bg text-left">
+      <section id="results-section" className="mt-16 bg-card-bg text-left">
         {showResults && movies.length > 0 && (
           <h2 className="text-2xl font-bold text-center mb-4">
-            Results for "{searchTerm}"
+            Results for "{category || searchTerm}"
           </h2>
         )}
         <MovieList movies={movies} /> 
