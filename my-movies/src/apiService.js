@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API_URL = 'https://www.omdbapi.com/';
-const API_KEY = import.meta.env.VITE_OMDB_API_KEY; // Ensure your .env is correctly set
+const API_KEY = import.meta.env.VITE_OMDB_API_KEY; 
 
 // Function to fetch movies based on a search term
 export const fetchMovies = async (searchTerm) => {
@@ -34,12 +34,12 @@ export const fetchMovieDetails = async (imdbID) => {
     const response = await axios.get(`${API_URL}?apikey=${API_KEY}&i=${imdbID}&plot=full`);
 
     if (response.data.Response === 'True') {
-      const { Title, Plot, Genre, Actors, Ratings, Poster } = response.data; // Destructuring the response
+      const { Title, Plot, Genre, Actors, Ratings, Poster } = response.data; 
 
       // Split actors string into an array if needed
       const castArray = Actors.split(', ').map((actor) => {
         const [name, role] = actor.split(' as ');
-        return { Name: name, Role: role || 'Actor',}; // Placeholder image; replace with actual if available
+        return { Name: name, Role: role || 'Actor',}; 
       });
 
       return {
@@ -49,7 +49,7 @@ export const fetchMovieDetails = async (imdbID) => {
           Plot,
           Genre: Genre.split(', '),
           Cast: castArray,
-          Ratings: Ratings, // This will be an array of ratings
+          Ratings: Ratings, 
           Poster,
         },
       };
