@@ -11,7 +11,7 @@ const Navbar = () => {
   const navRef = useRef(null);
   const overlayRef = useRef(null);
 
-  const API_KEY = import.meta.env.VITE_OMDB_API_KEY; // Make sure you have this environment variable setup
+  const API_KEY = import.meta.env.VITE_OMDB_API_KEY;
 
   const handleSearchClick = () => {
     setIsSearching(true);
@@ -63,6 +63,7 @@ const Navbar = () => {
     return types[type] || `Check out "${movie.Title}"!`;
   };
 
+  // Function to delete a notification
   const deleteNotification = (id) => {
     setNotifications(notifications.filter((notification) => notification.id !== id));
   };
@@ -181,7 +182,7 @@ const Navbar = () => {
                 &times;
               </button>
             </div>
-            <ul className="px-4 overflow-y-auto h-screen bg-gray-900">
+            <ul className="p-4 overflow-y-auto h-screen bg-gray-900">
               {notifications.length > 0 ? (
                 notifications.map((notification) => (
                   <li
@@ -246,27 +247,15 @@ const Navbar = () => {
                 <h2 className="text-lg px-4 font-semibold">Menu</h2>
                 <button
                   className="focus:outline-none text-3xl"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={toggleMenu}
                 >
                   &times;
                 </button>
               </div>
-              <ul className="px-4 py-2">
-                <li>
-                  <a href="#home" className="block py-4 px-4 hover:text-gray-300">
-                    Home
-                  </a>
-                </li>
-                <li>
-                  <a href="#about" className="block py-4 px-4 hover:text-gray-300">
-                    About
-                  </a>
-                </li>
-                <li>
-                  <a href="#services" className="block py-4 px-4 hover:text-gray-300">
-                    Services
-                  </a>
-                </li>
+              <ul className="p-4">
+                <li className="hover:bg-gray-700 p-4 rounded">My Profile</li>
+                <li className="hover:bg-gray-700 p-4 rounded">Settings</li>
+                <li className="hover:bg-gray-700 p-4 rounded">Logout</li>
               </ul>
             </div>
           </div>
