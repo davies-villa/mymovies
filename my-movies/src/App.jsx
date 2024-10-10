@@ -12,7 +12,7 @@ const AnimatedRoutes = () => {
     setAnimate(true);
     const timer = setTimeout(() => {
       setAnimate(false);
-    }, 1000); // Adjust based on your animation duration
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [location]);

@@ -8,9 +8,11 @@ const MovieCard = ({ imdbID, title, imageUrl }) => {
     review: "N/A",
     releaseDate: "N/A",
   });
+  const [loading, setLoading] = useState(true); // Loading state for movie details
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
+      setLoading(true); // Set loading to true
       try {
         const response = await axios.get(
           `https://www.omdbapi.com/?i=${imdbID}&apikey=${import.meta.env.VITE_OMDB_API_KEY}`
@@ -24,6 +26,13 @@ const MovieCard = ({ imdbID, title, imageUrl }) => {
         });
       } catch (error) {
         console.error("Failed to fetch movie details:", error);
+        setMovieDetails({
+          rating: "N/A",
+          review: "No review available",
+          releaseDate: "Unknown",
+        });
+      } finally {
+        setLoading(false); // Set loading to false
       }
     };
 
@@ -41,12 +50,18 @@ const MovieCard = ({ imdbID, title, imageUrl }) => {
           />
         </div>
         <h3 className="text-sm font-semibold mb-3 text-gray-900">{title}</h3>
-        <div className="text-gray-600 mb-2">
-          <span className="block text-sm">⭐ Rating: {movieDetails.rating !== "N/A" ? movieDetails.rating : "No rating"}</span>
-        </div>
-        <div className="text-gray-500 text-sm">
-          <span>📅 Released: {movieDetails.releaseDate}</span>
-        </div>
+        {loading ? (
+          <p className="text-center">Loading...</p>
+        ) : (
+          <>
+            <div className="text-gray-600 mb-2">
+              <span className="block text-sm">⭐ Rating: {movieDetails.rating !== "N/A" ? movieDetails.rating : "No rating"}</span>
+            </div>
+            <div className="text-gray-500 text-sm">
+              <span>📅 Released: {movieDetails.releaseDate}</span>
+            </div>
+          </>
+        )}
       </div>
     </Link>
   );
